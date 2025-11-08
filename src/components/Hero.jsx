@@ -1,51 +1,69 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import Spline from '@splinetool/react-spline';
+import { motion } from 'framer-motion';
+import { Sparkles, Heart } from 'lucide-react';
 
-const Hero = () => {
+const FloatingHeart = ({ delay = 0, x = 0, size = 24 }) => (
+  <motion.div
+    initial={{ y: 20, opacity: 0, x }}
+    animate={{ y: -40, opacity: 1, x }}
+    transition={{ delay, duration: 1.8, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+    className="text-pink-400/70"
+    aria-hidden
+  >
+    <Heart size={size} fill="currentColor" className="drop-shadow" />
+  </motion.div>
+);
+
+export default function Hero({ onOpenPopup }) {
   return (
-    <section className="relative min-h-[90vh] w-full overflow-hidden flex items-center justify-center">
-      <div className="absolute inset-0">
-        <Spline scene="https://prod.spline.design/kqB-rdL4TCJ7pyGb/scene.splinecode" style={{ width: '100%', height: '100%' }} />
-      </div>
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#F8E1E7]/70 via-white/40 to-white/90" />
+    <section className="relative w-full overflow-hidden bg-gradient-to-b from-[#FFC0CB] via-[#F8E1E7] to-white">
+      <div className="mx-auto max-w-6xl px-4 py-10 md:py-16">
+        <div className="grid items-center gap-8 md:grid-cols-2">
+          <div className="relative order-2 h-[360px] w-full rounded-2xl bg-white/70 shadow-xl ring-1 ring-white/60 backdrop-blur md:order-1 md:h-[520px]">
+            <Spline
+              scene="https://prod.spline.design/rwKT-aWtlkdY-8UV/scene.splinecode"
+              style={{ width: '100%', height: '100%' }}
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/10 via-transparent to-white/30" />
+          </div>
 
-      <div className="relative z-10 text-center px-6">
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-5xl md:text-7xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[#FFC0CB] via-[#FFB6C1] to-rose-400"
-        >
-          For N 💖
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.8 }}
-          className="mt-4 text-lg md:text-2xl text-gray-600"
-        >
-          Made with care and little pink dreams.
-        </motion.p>
+          <div className="order-1 md:order-2">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-sm text-pink-600 ring-1 ring-pink-300/50 shadow-sm">
+              <Sparkles size={16} />
+              <span>Made with love for N</span>
+            </div>
+            <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-pink-700 sm:text-5xl md:text-6xl">
+              A Pink, Playful World for N
+            </h1>
+            <p className="mt-4 max-w-prose text-pink-700/80">
+              Explore cute games, sweet moments, and little surprises. Tap the heart to open a lovely pop-up!
+            </p>
+            <div className="mt-6 flex items-center gap-3">
+              <button
+                onClick={onOpenPopup}
+                className="inline-flex items-center gap-2 rounded-full bg-pink-500 px-5 py-3 font-semibold text-white shadow-lg transition hover:bg-pink-600 focus:outline-none focus:ring-4 focus:ring-pink-300"
+              >
+                <Heart className="-ml-1" size={18} fill="currentColor" />
+                Open Surprise
+              </button>
+              <a
+                href="#games"
+                className="rounded-full bg-white/80 px-5 py-3 font-semibold text-pink-700 ring-1 ring-pink-200 transition hover:bg-white"
+              >
+                Play Games
+              </a>
+            </div>
 
-        {/* Floating hearts */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          {Array.from({ length: 12 }).map((_, i) => (
-            <motion.span
-              key={i}
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: [0, 1, 0], y: [-10, -80 - i * 10, -140 - i * 15] }}
-              transition={{ duration: 6 + i * 0.4, repeat: Infinity, delay: i * 0.3, ease: 'easeInOut' }}
-              className="absolute text-pink-400/70"
-              style={{ left: `${(i * 8) % 100}%`, bottom: `${(i * 6) % 60}%`, fontSize: `${14 + (i % 6) * 4}px` }}
-            >
-              💗
-            </motion.span>
-          ))}
+            <div className="relative mt-8 flex h-16 items-center gap-4">
+              <FloatingHeart delay={0.0} x={0} size={18} />
+              <FloatingHeart delay={0.35} x={16} size={22} />
+              <FloatingHeart delay={0.7} x={-10} size={16} />
+              <FloatingHeart delay={1.05} x={28} size={20} />
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default Hero;
+}
